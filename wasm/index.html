@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مختبر WebAssembly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0d1a'/%3E%3Crect x='4' y='13' width='13' height='6' fill='%237c5cff'/%3E%3Crect x='19' y='13' width='9' height='6' fill='%23f0b429'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="shell">
+
+  <header class="masthead">
+    <h1>مختبر WebAssembly</h1>
+    <span class="file num">wasm_demo.wasm</span>
+    <p class="sub">
+      أربع وحدات حسابية مكتوبة بلغة Rust ومترجَمة إلى WebAssembly. الحساب كله يجري
+      داخل الوحدة، وجافاسكربت تقرأ النتيجة مباشرة من الذاكرة الخطية دون نسخ.
+    </p>
+  </header>
+
+  <!-- الذاكرة الخطية: مخازن حقيقية بمواقعها الحقيقية -->
+  <section class="memory" aria-label="الذاكرة الخطية">
+    <div class="memory-head">
+      <span class="title">الذاكرة الخطية</span>
+      <span class="total">مستخدَم <b id="mem-used" class="num">—</b> من <b id="mem-total" class="num">—</b></span>
+    </div>
+    <div class="strip" id="strip"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <div class="body">
+
+    <nav class="rail" id="rail" role="tablist" aria-label="الوحدات">
+      <button role="tab" data-panel="fractal" aria-selected="true">
+        <span class="name">مجموعة ماندلبرو</span>
+        <span class="what">زمن الإفلات لكل بكسل، بدقة مضاعفة</span>
+      </button>
+      <button role="tab" data-panel="life" aria-selected="false">
+        <span class="name">لعبة الحياة</span>
+        <span class="what">لوح ملفوف ‎320×200‎ يُخطى كل إطار</span>
+      </button>
+      <button role="tab" data-panel="field" aria-selected="false">
+        <span class="name">حقل الجسيمات</span>
+        <span class="what">تكامل ورسم برمجي لعشرات الآلاف</span>
+      </button>
+      <button role="tab" data-panel="bench" aria-selected="false">
+        <span class="name">المقارنة</span>
+        <span class="what">نفس الخوارزمية في Rust وGo وجافاسكربت</span>
+      </button>
+    </nav>
+
+    <main class="main">
+
+      <div class="stage" id="stage">
+        <div class="panel-view" id="view-fractal" data-active="1">
+          <canvas id="fractal-canvas"></canvas>
+        </div>
+        <div class="panel-view" id="view-life">
+          <canvas id="life-canvas" width="960" height="600"></canvas>
+        </div>
+        <div class="panel-view" id="view-field">
+          <canvas id="field-canvas" width="960" height="600"></canvas>
+        </div>
+        <div class="panel-view" id="view-bench">
+          <div class="bench">
+            <p class="bench-intro">
+              كل مهمة تعمل ثلاث مرات على المدخلات نفسها: في Rust وفي Go، وكلتاهما
+              مترجَمة إلى WebAssembly، وفي جافاسكربت. فالمقارنة ليست بين WebAssembly
+              وجافاسكربت بل بين لغةٍ ومترجِمها. كل تشغيل يعيد بصمة حسابية، ومطابقتها
+              هي ما يثبت أن الثلاثة أدّوا العمل نفسه.
+            </p>
+            <div class="bench-key">
+              <span><i style="background:var(--wasm)"></i> Rust ‎→‎ wasm</span>
+              <span><i style="background:var(--go)"></i> Go ‎→‎ wasm</span>
+              <span><i style="background:var(--js)"></i> جافاسكربت</span>
+            </div>
+            <div id="bench-rows"></div>
+            <p class="checks" id="bench-checks"></p>
+          </div>
+        </div>
+        <div class="hint" id="hint"></div>
+      </div>
+
+      <div class="telemetry" id="telemetry"></div>
+
+      <div class="controls" id="ctl-fractal" data-active="1">
+        <label class="ctl">التكرارات
+          <input type="range" id="f-iter" min="64" max="3000" step="32" value="512">
+          <span class="amount num" id="f-iter-out">512</span>
+        </label>
+        <button class="btn" id="f-deep">تكبير عميق</button>
+        <button class="btn" id="f-reset">إعادة الضبط</button>
+      </div>
+
+      <div class="controls" id="ctl-life">
+        <button class="btn btn-primary" id="l-play">إيقاف</button>
+        <button class="btn" id="l-step">خطوة</button>
+        <button class="btn" id="l-random">توزيع عشوائي</button>
+        <button class="btn" id="l-gun">مدفع منزلقات</button>
+        <button class="btn" id="l-clear">مسح</button>
+        <label class="ctl">أجيال/إطار
+          <input type="range" id="l-speed" min="1" max="8" step="1" value="1">
+          <span class="amount num" id="l-speed-out">1</span>
+        </label>
+      </div>
+
+      <div class="controls" id="ctl-field">
+        <label class="ctl">الجسيمات
+          <input type="range" id="p-count" min="2000" max="90000" step="2000" value="30000">
+          <span class="amount num" id="p-count-out">30,000</span>
+        </label>
+        <label class="ctl">الأثر
+          <input type="range" id="p-trail" min="1" max="40" step="1" value="8">
+          <span class="amount num" id="p-trail-out">8</span>
+        </label>
+        <button class="btn" id="p-scatter">إعادة التوزيع</button>
+        <button class="btn" id="p-clear">إزالة الآبار</button>
+      </div>
+
+      <div class="controls" id="ctl-bench">
+        <button class="btn btn-primary" id="b-run">تشغيل المهام</button>
+        <span class="spacer"></span>
+        <span class="ctl">الصفحة تتجمد أثناء القياس — وهذا مقصود، فالقياس يجري على الخيط نفسه</span>
+      </div>
+
+      <section class="notes">
+        <div>
+          <h3>لا نسخ عبر الحدود</h3>
+          <p>
+            ترسم Rust الإطار في مخزن بكسلات داخل ذاكرتها، وتعيد مؤشره فقط. تبني
+            جافاسكربت <code>Uint8ClampedArray</code> فوق العنوان نفسه وتمرّره إلى
+            <code>putImageData</code>. لا تعبر البكسلات الحدود أبداً.
+          </p>
+        </div>
+        <div>
+          <h3>لماذا يُعاد بناء العرض كل إطار</h3>
+          <p>
+            تنمو ذاكرة WebAssembly صفحةً صفحة، وعند النمو ينفصل المخزن القديم.
+            الاحتفاظ بعرض قديم يعطي مصفوفة فارغة، لذا يُشتق العرض من
+            <code>memory.buffer</code> عند كل إطار.
+          </p>
+        </div>
+        <div>
+          <h3>ما الذي يُقاس فعلاً</h3>
+          <p>
+            ثماني مهام مختارة لتُجهد أشياء مختلفة لا لتكبر أرقامها: حساب عشري،
+            وكتابة متفرّقة، وعرض نطاق ذاكري، وبحث في جداول، واستدعاء متكرر،
+            وتخصيص قصير العمر. آخرها وحدها تقلب الترتيب رأساً على عقب.
+          </p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

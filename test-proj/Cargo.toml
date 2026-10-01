@@ -1,0 +1,34 @@
+[workspace]
+members  = ["crates/kernel", "crates/contracts", "crates/platform",
+            "crates/modules/*", "crates/api", "crates/worker", "bin/*"]
+resolver = "3"
+
+# النسخ تتحدّد هنا مرة واحدة — لا موديول يختار نسخته بنفسه
+[workspace.dependencies]
+tokio              = { version = "1.53", features = ["full"] }
+axum               = "0.8"
+async-graphql      = "7.2"
+async-graphql-axum = "7.2"
+mongodb            = "3.8"
+redis              = { version = "1.6", features = ["tokio-comp"] }
+lapin              = "4.10"
+reqwest            = { version = "0.13", features = ["json"] }
+serde              = { version = "1", features = ["derive"] }
+serde_json         = "1"
+async-trait        = "0.1"
+futures            = "0.3"
+thiserror          = "2"
+anyhow             = "1"
+tracing            = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+time               = "0.3"
+uuid               = { version = "1", features = ["v4"] }
+
+qumra-kernel        = { path = "crates/kernel" }
+qumra-contracts     = { path = "crates/contracts" }
+qumra-platform      = { path = "crates/platform" }
+qumra-orders        = { path = "crates/modules/orders" }
+qumra-inventory     = { path = "crates/modules/inventory" }
+qumra-notifications = { path = "crates/modules/notifications" }
+qumra-api           = { path = "crates/api" }
+qumra-worker        = { path = "crates/worker" }

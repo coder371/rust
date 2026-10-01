@@ -1,0 +1,12 @@
+[package]
+name = "qumra-kernel"
+version = "0.1.0"
+edition = "2024"
+
+# المفردات المشتركة فقط. لا مونجو ولا Redis ولا HTTP.
+[dependencies]
+serde      = { workspace = true }
+serde_json = { workspace = true }
+thiserror  = { workspace = true }
+time       = { workspace = true }
+uuid       = { workspace = true }

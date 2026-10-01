@@ -1,0 +1,11 @@
+<meta property="og:title" content="{{ globals.store.name }}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{ globals.store.logo | image_url(1200) }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Store",
+  "name": "{{ globals.store.name }}",
+  "currenciesAccepted": "{{ localization.currency.code }}"
+}
+</script>

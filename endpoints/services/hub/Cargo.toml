@@ -1,0 +1,14 @@
+[package]
+name = "services"
+version.workspace = true
+edition.workspace = true
+
+# الهَب هو المكان الوحيد اللي بيشوف كل الخدمات مع بعض.
+# ❗ برضه ممنوع عليه: async-graphql, axum, store
+[dependencies]
+kernel          = { workspace = true }
+service-runtime = { workspace = true }
+svc-identity    = { workspace = true }
+svc-orders      = { workspace = true }
+svc-billing     = { workspace = true }
+futures         = { workspace = true }

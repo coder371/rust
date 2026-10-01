@@ -1,0 +1,18 @@
+# Build output
+target/
+node_modules/
+dist/
+wasm/pkg/
+
+# Secrets — keep the .env.example files
+.env
+.env.*
+!.env.example
+
+# Runtime data
+endpoints/uploads/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store

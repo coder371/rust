@@ -1,0 +1,20 @@
+<article class="product-card" data-product="{{ product._id }}">
+  {{ product.images[0] | image_tag(600) | safe }}
+  <h3 class="product-card__title">{{ product.title | truncate_words(8) }}</h3>
+  <p class="product-card__desc">{{ product.description | truncate_words(14) }}</p>
+  <p class="product-card__price">
+    <span class="price">{{ product.price | money(localization.currency.code) }}</span>
+    {% if product.compareAtPrice > product.price %}
+      <s class="price--was">{{ product.compareAtPrice | money(localization.currency.code) }}</s>
+    {% endif %}
+  </p>
+  <ul class="product-card__variants">
+    {% for variant in product.variants %}
+      <li data-variant="{{ variant._id }}" data-sku="{{ variant.sku }}">
+        {{ variant.title }} — {{ variant.price | money(localization.currency.code) }}
+        {% if variant.inventory.quantity > 0 %}<em>متوفر</em>{% else %}<em>نفد</em>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  <button data-add-to-cart="{{ product._id }}">أضف للسلة</button>
+</article>

@@ -1,0 +1,20 @@
+[package]
+name = "qumra-platform"
+version = "0.1.0"
+edition = "2024"
+
+# البنية التحتية المشتركة: العملاء طويلو العمر + المُرحِّل + الـ idempotency.
+# هذا هو الـ crate الوحيد الذي يعرف مونجو وRedis وRabbitMQ وOpenAI.
+[dependencies]
+qumra-kernel    = { workspace = true }
+qumra-contracts = { workspace = true }
+tokio           = { workspace = true }
+mongodb         = { workspace = true }
+redis           = { workspace = true }
+lapin           = { workspace = true }
+reqwest         = { workspace = true }
+serde           = { workspace = true }
+serde_json      = { workspace = true }
+futures         = { workspace = true }
+anyhow          = { workspace = true }
+tracing         = { workspace = true }

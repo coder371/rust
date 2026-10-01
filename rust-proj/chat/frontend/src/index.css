@@ -1,0 +1,684 @@
+/* ============================================================
+   مجلس — نظام التصميم
+   المفهوم: صفحة مخطوط. حبر داكن، نص بلون الرقّ، وأسماء
+   المتكلمين بحبر ترقين مغاير — زي ما المخطوطات العربية
+   بتعلّم العناوين والفواصل بحبر أحمر جوّه النص الأسود.
+   ============================================================ */
+
+:root {
+  /* الحبر: أرضية التطبيق */
+  --ink-900: #12141c;
+  --ink-800: #171a24;
+  --ink-700: #1f2331;
+  --ink-600: #2b3040;
+  --ink-500: #3a4055;
+
+  /* الرقّ: النص */
+  --parchment: #e8e3d6;
+  --parchment-dim: #9a968c;
+  --parchment-faint: #6b6963;
+
+  /* حبر الترقين: أسماء المتكلمين، الغرفة النشطة، التركيز */
+  --rubric: #e0603c;
+  --rubric-soft: rgba(224, 96, 60, 0.14);
+
+  /* الزنجار: الحضور والاتصال الحيّ */
+  --verdigris: #5fb8a8;
+
+  --amber: #d9a441;
+
+  --display: "Readex Pro", system-ui, sans-serif;
+  --body: "IBM Plex Sans Arabic", system-ui, sans-serif;
+
+  --rail: 264px;
+  --radius: 10px;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink-900);
+  color: var(--parchment);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--rubric);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ================= شاشة الدخول ================= */
+
+.auth {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  padding: 24px;
+}
+
+.auth__card {
+  width: min(400px, 100%);
+}
+
+.auth__mark {
+  font-family: var(--display);
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* الوردة: علامة الترقين المستقلة. الكلمة نفسها بتفضل سليمة —
+   تلوين نصّ كلمة عربية بيقطع اتصال الحروف. */
+.mark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mark__rosette {
+  color: var(--rubric);
+  flex: none;
+}
+
+.auth__tagline {
+  color: var(--parchment-dim);
+  margin: 10px 0 34px;
+  font-size: 14px;
+}
+
+.auth__form {
+  display: grid;
+  gap: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+}
+
+.field__label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--parchment-dim);
+}
+
+.input {
+  background: var(--ink-800);
+  border: 1px solid var(--ink-600);
+  border-radius: var(--radius);
+  padding: 11px 13px;
+  transition: border-color 0.15s ease;
+}
+
+.input:focus {
+  border-color: var(--rubric);
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--parchment-faint);
+}
+
+.button {
+  background: var(--rubric);
+  color: #1a0e0a;
+  border: 0;
+  border-radius: var(--radius);
+  padding: 11px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.button:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button--quiet {
+  background: none;
+  color: var(--parchment-dim);
+  padding: 0;
+  font-weight: 400;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.button--quiet:hover:not(:disabled) {
+  color: var(--parchment);
+  filter: none;
+}
+
+.auth__switch {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--parchment-dim);
+}
+
+.alert {
+  background: var(--rubric-soft);
+  border: 1px solid rgba(224, 96, 60, 0.35);
+  border-radius: var(--radius);
+  padding: 10px 13px;
+  font-size: 13.5px;
+  color: var(--parchment);
+}
+
+/* ================= هيكل التطبيق ================= */
+
+.app {
+  display: grid;
+  grid-template-columns: 1fr var(--rail);
+  height: 100%;
+}
+
+/* ---- العمود الجانبي ---- */
+
+.rail {
+  background: var(--ink-800);
+  border-inline-start: 1px solid var(--ink-600);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 0;
+}
+
+.rail__head {
+  padding: 20px 18px 14px;
+}
+
+.rail__mark {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.rail__body {
+  overflow-y: auto;
+  padding: 0 12px;
+  min-height: 0;
+}
+
+.rail__section {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--parchment-faint);
+  padding: 18px 6px 8px;
+  margin: 0;
+}
+
+.room {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align: start;
+  color: var(--parchment-dim);
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.room:hover {
+  background: var(--ink-700);
+  color: var(--parchment);
+}
+
+.room[aria-current="true"] {
+  background: var(--rubric-soft);
+  color: var(--parchment);
+}
+
+.room__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.room__count {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--parchment-faint);
+}
+
+.room[aria-current="true"] .room__count {
+  color: var(--rubric);
+}
+
+.presence {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 10px;
+  font-size: 13.5px;
+  color: var(--parchment-dim);
+}
+
+.presence__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--verdigris);
+  flex: none;
+}
+
+.rail__foot {
+  border-block-start: 1px solid var(--ink-600);
+  padding: 13px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.rail__me {
+  font-size: 13.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.new-room {
+  display: flex;
+  gap: 7px;
+  padding: 4px 6px 8px;
+}
+
+.new-room .input {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 10px;
+  font-size: 13.5px;
+}
+
+.new-room .button {
+  padding: 7px 12px;
+  font-size: 13.5px;
+}
+
+/* ---- منطقة المحادثة ---- */
+
+.room-view {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+.room-view__head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 18px 28px 14px;
+  border-block-end: 1px solid var(--ink-600);
+}
+
+.room-view__title {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.room-view__count {
+  font-size: 12.5px;
+  color: var(--parchment-faint);
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+
+.status {
+  font-size: 12.5px;
+  color: var(--parchment-faint);
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.status__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--parchment-faint);
+}
+
+.status[data-state="open"] .status__dot {
+  background: var(--verdigris);
+}
+
+.status[data-state="connecting"] .status__dot,
+.status[data-state="reconnecting"] .status__dot {
+  background: var(--amber);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* ---- عمود المخطوط ---- */
+
+.thread {
+  overflow-y: auto;
+  padding: 26px 28px 20px;
+  min-height: 0;
+}
+
+/* المحادثة بتترسّب لتحت: min-height + justify-content بيخلّوا
+   الفراغ يقع فوق الرسائل بدل ما يسيب فجوة فوق صندوق الكتابة.
+   وبيفضل يتزحلق عادي لما المحتوى يزيد عن الطول. */
+.thread__inner {
+  max-width: 68ch;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.entry {
+  animation: rise 0.16s ease-out;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+/* الترقين: اسم المتكلم بحبر مغاير، والوقت بجانبه كبيانات */
+.entry__rubric {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-block-start: 18px;
+  margin-block-end: 2px;
+}
+
+.entry:first-child .entry__rubric {
+  margin-block-start: 0;
+}
+
+.entry__author {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--rubric);
+}
+
+.entry__author--me {
+  color: var(--verdigris);
+}
+
+.entry__time {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--parchment-faint);
+}
+
+.entry__body {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* رسالة متتابعة لنفس المتكلم: بدون ترقين، النص بيكمل */
+.entry--run .entry__body {
+  margin-block-start: 3px;
+}
+
+.entry--system {
+  font-size: 13px;
+  color: var(--parchment-faint);
+  margin-block: 18px;
+}
+
+.thread__empty {
+  color: var(--parchment-faint);
+  font-size: 14px;
+  margin-block-start: 8px;
+}
+
+.typing {
+  padding: 0 28px;
+  height: 22px;
+  font-size: 12.5px;
+  color: var(--parchment-dim);
+}
+
+/* ---- صندوق الكتابة ---- */
+
+.composer {
+  padding: 8px 28px 22px;
+}
+
+.composer__inner {
+  max-width: 68ch;
+  display: flex;
+  gap: 9px;
+  align-items: flex-end;
+  background: var(--ink-800);
+  border: 1px solid var(--ink-600);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  transition: border-color 0.15s ease;
+}
+
+.composer__inner:focus-within {
+  border-color: var(--ink-500);
+}
+
+.composer__input {
+  flex: 1;
+  background: none;
+  border: 0;
+  resize: none;
+  padding: 4px 3px;
+  max-height: 140px;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+.composer__input:focus {
+  outline: none;
+}
+
+.composer__input::placeholder {
+  color: var(--parchment-faint);
+}
+
+.composer__send {
+  background: var(--rubric);
+  color: #1a0e0a;
+  border: 0;
+  border-radius: 7px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex: none;
+  transition: filter 0.15s ease, opacity 0.15s ease;
+}
+
+.composer__send:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
+.composer__send:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.composer__hint {
+  max-width: 68ch;
+  font-size: 12px;
+  color: var(--parchment-faint);
+  margin-block-start: 8px;
+}
+
+.toast {
+  position: fixed;
+  inset-block-end: 24px;
+  inset-inline-start: 24px;
+  background: var(--ink-700);
+  border: 1px solid var(--ink-500);
+  border-inline-start: 3px solid var(--rubric);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 13.5px;
+  max-width: 340px;
+  animation: rise 0.16s ease-out;
+}
+
+.empty-state {
+  display: grid;
+  place-items: center;
+  color: var(--parchment-faint);
+  padding: 40px;
+  text-align: center;
+}
+
+/* ================= الموبايل ================= */
+
+@media (max-width: 760px) {
+  /* الرايل بيبقى شريط أفقي فوق. الترتيب صريح لأن room-view
+     أول في الـ DOM — من غير grid-row كان بياخد الصف الأول
+     ويزقّ الرايل بره الشاشة. */
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .rail {
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-inline-start: 0;
+    border-block-end: 1px solid var(--ink-600);
+    overflow: hidden;
+  }
+
+  .room-view {
+    grid-row: 2;
+  }
+
+  .rail__head {
+    padding: 0;
+    flex: none;
+  }
+
+  /* الاسم الكامل بياخد عرض من الغرف — الوردة لوحدها كافية هنا */
+  .rail__mark {
+    font-size: 0;
+  }
+
+  /* الغرف وحدها هي اللي تتزحلق أفقياً */
+  .rail__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+
+  .rail__body::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* الحضور والعنوانين بيتشالوا: عدّاد كل غرفة موجود على الشريحة نفسها */
+  .rail__section,
+  .presence {
+    display: none;
+  }
+
+  .room {
+    flex: none;
+    width: auto;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--ink-700);
+  }
+
+  .new-room {
+    padding: 0;
+    flex: none;
+  }
+
+  .new-room .input {
+    width: 118px;
+  }
+
+  /* بره منطقة الزحلقة عشان الخروج يفضل موجود دايماً */
+  .rail__foot {
+    border-block-start: 0;
+    padding: 0;
+    flex: none;
+    gap: 8px;
+  }
+
+  .rail__me {
+    max-width: 84px;
+  }
+
+  .thread,
+  .composer,
+  .room-view__head,
+  .typing {
+    padding-inline: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

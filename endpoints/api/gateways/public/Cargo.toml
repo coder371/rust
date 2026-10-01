@@ -1,0 +1,13 @@
+[package]
+name = "gw-public"
+version.workspace = true
+edition.workspace = true
+
+# ❗ البوابة بتعرف الكيرنل وهَب الخدمات بس — ممنوع store وممنوع أي بوابة تانية
+[dependencies]
+kernel             = { workspace = true }
+services           = { workspace = true }
+gw-shared          = { workspace = true }
+async-graphql      = { workspace = true }
+async-graphql-axum = { workspace = true }
+axum               = { workspace = true }

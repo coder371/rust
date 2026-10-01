@@ -1,0 +1,9 @@
+[package]
+name = "gw-shared"
+version.workspace = true
+edition.workspace = true
+
+# ❗ أدوات عرض بس — مالوش أي علاقة بالخدمات ولا الداتابيز
+[dependencies]
+kernel        = { workspace = true }
+async-graphql = { workspace = true }

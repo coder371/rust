@@ -1,0 +1,19 @@
+[package]
+name = "qumra-notifications"
+version = "0.1.0"
+edition = "2024"
+
+# يستهلك أحداث الطلبات — عبر qumra-contracts، لا عبر qumra-orders.
+[dependencies]
+qumra-kernel    = { workspace = true }
+qumra-contracts = { workspace = true }
+qumra-platform  = { workspace = true }
+async-graphql   = { workspace = true }
+async-trait     = { workspace = true }
+mongodb         = { workspace = true }
+futures         = { workspace = true }
+serde           = { workspace = true }
+serde_json      = { workspace = true }
+thiserror       = { workspace = true }
+anyhow          = { workspace = true }
+tracing         = { workspace = true }

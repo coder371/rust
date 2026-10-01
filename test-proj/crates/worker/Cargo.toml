@@ -1,0 +1,17 @@
+[package]
+name = "qumra-worker"
+version = "0.1.0"
+edition = "2024"
+
+# جذر التركيب للأحداث. يعرف من يعالج ماذا — والموديولات لا تعرف بعضها.
+[dependencies]
+qumra-contracts     = { workspace = true }
+qumra-platform      = { workspace = true }
+qumra-notifications = { workspace = true }
+qumra-api           = { workspace = true }
+lapin               = { workspace = true }
+futures             = { workspace = true }
+tokio               = { workspace = true }
+serde_json          = { workspace = true }
+anyhow              = { workspace = true }
+tracing             = { workspace = true }

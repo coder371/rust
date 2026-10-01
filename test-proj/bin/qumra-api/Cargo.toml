@@ -1,0 +1,17 @@
+[package]
+name = "qumra-api-bin"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "qumra-api"
+path = "src/main.rs"
+
+[dependencies]
+qumra-api          = { workspace = true }
+qumra-platform     = { workspace = true }
+axum               = { workspace = true }
+tokio              = { workspace = true }
+anyhow             = { workspace = true }
+tracing            = { workspace = true }
+tracing-subscriber = { workspace = true }

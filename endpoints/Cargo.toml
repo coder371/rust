@@ -1,0 +1,52 @@
+# المشروع متقسّم 3 أجزاء واضحة، والترتيب ده هو ترتيب الاعتماد نفسه:
+#   core/      الأساس        — الموديلات والعقود وتنفيذها
+#   services/  البيزنس لوجيك  — خدمات مستقلة + هَب بيشغّل أكتر من خدمة مع بعض
+#   api/       البوابات والـAPI — كل بوابة على مسارها، وبينري واحد بيركّبهم
+[workspace]
+members = [
+    "core/kernel",
+    "core/store",
+    "services/runtime",
+    "services/identity",
+    "services/orders",
+    "services/billing",
+    "services/hub",
+    "api/gateways/*",
+    "api/server",
+]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+
+# النسخ تتحدّد هنا مرة واحدة — مفيش كريت بيختار نسخته بنفسه
+[workspace.dependencies]
+async-graphql      = "7.2.1"
+async-graphql-axum = "7.2.1"
+axum               = { version = "0.8.9", features = ["multipart"] }
+async-trait        = "0.1"
+dotenvy            = "0.15.7"
+futures            = { version = "0.3", default-features = false, features = ["std", "async-await"] }
+rand               = "0.10.2"
+serde              = { version = "1.0.229", features = ["derive"] }
+thiserror          = "2"
+tokio              = { version = "1.53.1", features = ["full"] }
+
+# ❶ الكور
+kernel          = { path = "core/kernel" }
+store           = { path = "core/store" }
+
+# ❷ البيزنس لوجيك
+service-runtime = { path = "services/runtime" }
+svc-identity    = { path = "services/identity" }
+svc-orders      = { path = "services/orders" }
+svc-billing     = { path = "services/billing" }
+services        = { path = "services/hub" }
+
+# ❸ البوابات والـ API
+gw-shared       = { path = "api/gateways/shared" }
+gw-admin        = { path = "api/gateways/admin" }
+gw-public       = { path = "api/gateways/public" }
+gw-partner      = { path = "api/gateways/partner" }
+gw-rest         = { path = "api/gateways/rest" }

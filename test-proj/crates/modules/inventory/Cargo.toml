@@ -1,0 +1,15 @@
+[package]
+name = "qumra-inventory"
+version = "0.1.0"
+edition = "2024"
+
+# لا qumra-orders هنا. الطلبات هي من تعرّف الـ port، والمخزون لا يعرف بوجودها.
+[dependencies]
+qumra-kernel   = { workspace = true }
+qumra-platform = { workspace = true }
+async-graphql  = { workspace = true }
+async-trait    = { workspace = true }
+mongodb        = { workspace = true }
+serde          = { workspace = true }
+thiserror      = { workspace = true }
+tracing        = { workspace = true }

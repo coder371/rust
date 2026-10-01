@@ -1,0 +1,18 @@
+[package]
+name = "qumra-api"
+version = "0.1.0"
+edition = "2024"
+
+# جذر التركيب: الـ crate الوحيد المسموح له بمعرفة أكثر من موديول.
+[dependencies]
+qumra-kernel        = { workspace = true }
+qumra-platform      = { workspace = true }
+qumra-orders        = { workspace = true }
+qumra-inventory     = { workspace = true }
+qumra-notifications = { workspace = true }
+axum                = { workspace = true }
+async-graphql       = { workspace = true }
+async-graphql-axum  = { workspace = true }
+async-trait         = { workspace = true }
+tokio               = { workspace = true }
+tracing             = { workspace = true }

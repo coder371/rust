@@ -1,0 +1,14 @@
+<section class="widget widget--grid" id="{{ widget.widgetKey }}">
+  <header class="widget__head">
+    <h2>{{ widget.data.field_0 }}</h2>
+    <p>{{ widget.data.field_1 | truncate_words(18) }}</p>
+  </header>
+  <div class="widget__grid">
+    {% for product in widget.products %}
+      {% include "snippets/product-card.njk" %}
+    {% endfor %}
+  </div>
+  {% for block in widget.blocks %}
+    <div class="block" data-block="{{ block.blockKey }}"><h4>{{ block.data.field_0 }}</h4></div>
+  {% endfor %}
+</section>

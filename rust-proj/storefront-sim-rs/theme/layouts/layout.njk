@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="{{ localization.language }}" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ globals.store.name }} — {{ page.title }}</title>
+  <meta name="description" content="{{ page.description | truncate_words(30) }}">
+  <link rel="canonical" href="{{ globals.store.url }}{{ page.path }}">
+  {% include "snippets/seo.njk" %}
+  {% include "snippets/scripts.njk" %}
+</head>
+<body class="template-{{ page.handle | handleize }}">
+  {% for template in templates %}
+    {% for widget in template.widgets %}
+      {% include "widgets/" ~ widget.template ~ ".njk" %}
+    {% endfor %}
+  {% endfor %}
+  {% include "snippets/footer-scripts.njk" %}
+</body>
+</html>

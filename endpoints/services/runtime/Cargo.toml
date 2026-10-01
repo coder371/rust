@@ -1,0 +1,10 @@
+[package]
+name = "service-runtime"
+version.workspace = true
+edition.workspace = true
+
+# العقد اللي بيخلّي أكتر من خدمة تشتغل جنب بعض. مايعرفش أي خدمة بعينها.
+[dependencies]
+kernel      = { workspace = true }
+async-trait = { workspace = true }
+futures     = { workspace = true }

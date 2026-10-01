@@ -1,0 +1,37 @@
+input PageInput {
+	offset: Int
+	limit: Int
+}
+
+type Query {
+	"""
+	إند بوينت فحص بسيط.
+	"""
+	hello: String!
+	"""
+	المستخدمين الظاهرين للعامة (المحظورين مش بيظهروا).
+	"""
+	users(page: PageInput): [User!]!
+	user(id: ID!): User!
+}
+
+"""
+شكل المستخدم في البوابة العامة — الاسم والـ id بس.
+مفيش راتب ولا ملاحظات داخلية ولا حتى إيميل.
+"""
+type User {
+	id: ID!
+	name: String!
+}
+
+"""
+Directs the executor to include this field or fragment only when the `if` argument is true.
+"""
+directive @include(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+"""
+Directs the executor to skip this field or fragment when the `if` argument is true.
+"""
+directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+schema {
+	query: Query
+}

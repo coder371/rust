@@ -1,0 +1,9 @@
+[package]
+name = "qumra-contracts"
+version = "0.1.0"
+edition = "2024"
+
+# عقود الأحداث فقط. serde وبس — صفر منطق وصفر بنية تحتية.
+[dependencies]
+serde      = { workspace = true }
+serde_json = { workspace = true }

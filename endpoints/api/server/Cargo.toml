@@ -1,0 +1,21 @@
+[package]
+name = "api"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "api"
+path = "src/main.rs"
+
+# ❸ البينري هو المكان الوحيد اللي بيشوف store والبوابات مع بعض (composition root)
+[dependencies]
+kernel   = { workspace = true }
+store    = { workspace = true }
+services = { workspace = true }
+gw-admin   = { workspace = true }
+gw-public  = { workspace = true }
+gw-partner = { workspace = true }
+gw-rest    = { workspace = true }
+axum     = { workspace = true }
+dotenvy  = { workspace = true }
+tokio    = { workspace = true }

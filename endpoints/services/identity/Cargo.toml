@@ -1,0 +1,11 @@
+[package]
+name = "svc-identity"
+version.workspace = true
+edition.workspace = true
+
+# ❗ الخدمة ماتعرفش async-graphql ولا axum ولا store
+[dependencies]
+kernel          = { workspace = true }
+service-runtime = { workspace = true }
+async-trait     = { workspace = true }
+rand            = { workspace = true }

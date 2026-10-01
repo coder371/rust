@@ -1,0 +1,4 @@
+# اختصارات: المشروع فيه بايناريان، فلا يوجد "التشغيل الافتراضي"
+[alias]
+api    = "run --bin qumra-api"
+worker = "run --bin qumra-worker"

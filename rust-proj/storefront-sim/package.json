@@ -1,0 +1,14 @@
+{
+  "name": "storefront-sim",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "محاكاة حمل رندر الواجهة في core-service، لقياس عدد الزوار في الثانية",
+  "scripts": {
+    "start": "node src/server.js",
+    "bench": "node bench.js"
+  },
+  "dependencies": {
+    "nunjucks": "^3.2.4"
+  }
+}

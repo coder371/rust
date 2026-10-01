@@ -1,0 +1,9 @@
+[package]
+name = "svc-billing"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+kernel          = { workspace = true }
+service-runtime = { workspace = true }
+async-trait     = { workspace = true }

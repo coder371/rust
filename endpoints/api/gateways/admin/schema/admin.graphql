@@ -1,0 +1,120 @@
+"""
+الإنبوت بتاع الإند بوينت ده ساكن معاه في نفس الملف.
+"""
+input CreateUserInput {
+	name: String!
+	email: String!
+	salaryCents: Int!
+}
+
+"""
+نتيجة فلو `admin_dashboard`: 3 خدمات + فحص البلاتفورم في ريكوست واحد.
+"""
+type Dashboard {
+	usersCount: Int!
+	revenue: RevenueReport!
+	recentOrders: [Order!]!
+	services: [ServiceHealth!]!
+}
+
+"""
+عرض الفلوس في السكيما: السنت للحسابات، والنص للعرض.
+"""
+type Money {
+	cents: Int!
+	formatted: String!
+}
+
+type Mutation {
+	createUser(input: CreateUserInput!): User!
+	setUserBanned(id: ID!, banned: Boolean!): User!
+}
+
+"""
+شكل الأوردر في بوابة الإدارة — الـ tenant ظاهر هنا وبس.
+"""
+type Order {
+	id: ID!
+	customerId: ID!
+	total: Money!
+	status: OrderStatus!
+	tenant: String
+}
+
+enum OrderStatus {
+	PENDING
+	PAID
+	CANCELLED
+}
+
+input PageInput {
+	offset: Int
+	limit: Int
+}
+
+type Query {
+	"""
+	مستخدم واحد بكل بياناته.
+	"""
+	userById(id: ID!): User!
+	"""
+	كل المستخدمين — بما فيهم المحظورين.
+	"""
+	users(page: PageInput): [User!]!
+	"""
+	تقرير الإيرادات — محمي بجارد على مستوى الحقل كمان.
+	"""
+	revenue: RevenueReport!
+	"""
+	🔀 الإند بوينت ده بيلمس `identity` و `billing` و `orders` في نفس اللحظة.
+	التجميع كله جوّه فلو في الهَب — البوابة بتحوّل الشكل بس.
+	"""
+	dashboard: Dashboard!
+}
+
+type RevenueReport {
+	paidOrders: Int!
+	pendingOrders: Int!
+	cancelledOrders: Int!
+	totalPaid: Money!
+}
+
+"""
+حال خدمة واحدة من الخدمات المسجّلة في الهَب.
+"""
+type ServiceHealth {
+	service: String!
+	status: ServiceStatus!
+	detail: String!
+}
+
+enum ServiceStatus {
+	UP
+	DEGRADED
+	DOWN
+}
+
+"""
+شكل المستخدم في بوابة الإدارة — كل الحقول ظاهرة.
+"""
+type User {
+	id: ID!
+	name: String!
+	email: String!
+	salary: Money!
+	internalNotes: String!
+	banned: Boolean!
+}
+
+"""
+Directs the executor to include this field or fragment only when the `if` argument is true.
+"""
+directive @include(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+"""
+Directs the executor to skip this field or fragment when the `if` argument is true.
+"""
+directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+schema {
+	query: Query
+	mutation: Mutation
+}

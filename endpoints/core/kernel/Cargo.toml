@@ -1,0 +1,9 @@
+[package]
+name = "kernel"
+version.workspace = true
+edition.workspace = true
+
+# ❗ الكيرنل مايعرفش axum ولا async-graphql ولا أي داتابيز
+[dependencies]
+async-trait = { workspace = true }
+thiserror   = { workspace = true }

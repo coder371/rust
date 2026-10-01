@@ -1,0 +1,10 @@
+[package]
+name = "gw-rest"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+kernel   = { workspace = true }
+services = { workspace = true }
+axum     = { workspace = true }
+serde    = { workspace = true }

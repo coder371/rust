@@ -1,0 +1,21 @@
+[package]
+name = "storefront-sim"
+version = "0.1.0"
+edition = "2024"
+
+# مشروع مستقل، مش عضو في workspace الأب
+[workspace]
+
+[dependencies]
+axum = "0.8.9"
+futures = "0.3.34"
+minijinja = { version = "2.24.0", features = ["json", "loader"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = { version = "1.0.151", features = ["preserve_order"] }
+tokio = { version = "1.53.1", features = ["full"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"

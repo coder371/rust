@@ -1,0 +1,10 @@
+[package]
+name = "rust-proj"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+argon2 = "0.6.0"
+dotenvy = "0.15.7"
+jsonwebtoken = { version = "11.0.0", features = ["rust_crypto"] }
+serde = { version = "1.0.229", features = ["derive"] }

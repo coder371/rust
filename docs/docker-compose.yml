@@ -1,0 +1,26 @@
+# شغّل البنية التحتية كلها:   docker compose up -d
+# وقفها:                      docker compose down        (أضف -v لو عايز تمسح الداتا)
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: learn
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+
+  mongo:
+    image: mongo:8
+    ports: ["27017:27017"]
+    volumes: [mongodata:/data/db]
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    ports:
+      - "5672:5672"    # AMQP
+      - "15672:15672"  # لوحة التحكم: http://localhost:15672  (guest / guest)
+
+volumes:
+  pgdata:
+  mongodata:
